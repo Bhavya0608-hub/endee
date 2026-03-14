@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+
+  # Endee vector database
+  endee:
+    image: endeeio/endee-server:latest
+    container_name: endee-server
+    ports:
+      - "8080:8080"
+    volumes:
+      - endee-data:/data
+    ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
+    restart: unless-stopped
+
+  # Your RAG FastAPI app
+  rag-api:
+    build: .
+    container_name: rag-api
+    ports:
+      - "8000:8000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - ENDEE_BASE_URL=http://endee:8080    # container name as hostname
+      - ENDEE_INDEX_NAME=${ENDEE_INDEX_NAME}
+    depends_on:
+      - endee
+    restart: unless-stopped
+
+volumes:
+  endee-data:
+

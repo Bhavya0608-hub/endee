@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+endee-data/
+uploaded_docs/

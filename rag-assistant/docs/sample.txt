@@ -1,0 +1,6 @@
+Endee is a high-performance open-source vector database for AI search.
+It supports dense vector retrieval, payload filtering, and hybrid search.
+Endee is implemented in C++ and supports AVX2, AVX512, NEON, and SVE2 CPU targets.
+It can be deployed via Docker, install.sh script, or manual CMake build.
+The server runs on port 8080 by default.
+You can protect it with an auth token using NDD_AUTH_TOKEN.
