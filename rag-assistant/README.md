@@ -53,7 +53,7 @@ Traditional keyword search fails when users ask questions in natural language. L
 │                   Beautiful HTML/CSS/JS UI                      │
 └─────────────────────┬───────────────────────────────────────────┘
                       │ HTTP
-┌─────────────────────▼───────────────────────────────────────────┐
+┌─────────────────────▼────────────────────────────────────────────┐
 │                    FASTAPI BACKEND                               │
 │                                                                  │
 │   POST /upload          POST /query          GET /health         │
@@ -72,9 +72,9 @@ Traditional keyword search fails when users ask questions in natural language. L
 └────────┼────────────────────┼────────────────────────────────────┘
          │                    │
 ┌────────▼────────┐  ┌────────▼────────────────┐
-│   ENDEE (Docker)│  │   GROQ API (Cloud)       │
-│   Vector DB     │  │   qwen-qwq-32b model     │
-│   Port 8080     │  │   Fast inference          │
+│   ENDEE (Docker)│  │   GROQ API (Cloud)      │
+│   Vector DB     │  │   qwen-qwq-32b model    │
+│   Port 8080     │  │   Fast inference        │
 │   Cosine search │  └──────────────────────────┘
 │   Metadata store│
 └─────────────────┘
