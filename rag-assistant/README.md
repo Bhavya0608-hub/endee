@@ -20,7 +20,7 @@
 
 ## What is this?
 
-**RAG Assistant** is a full-stack AI application that lets you upload documents (PDF, DOCX, TXT, MD) and ask natural language questions about them. It uses **Retrieval-Augmented Generation (RAG)** — a technique where relevant parts of your documents are retrieved using vector search and passed to an LLM as context, so answers are grounded in your actual content rather than the model's general knowledge.
+**RAG Assistant** is an AI application that lets you upload documents (PDF, DOCX, TXT, MD) and ask natural language questions about them. It uses **Retrieval-Augmented Generation (RAG)** — a technique where relevant parts of your documents are retrieved using vector search and passed to an LLM as context, so answers are grounded in your actual content rather than the model's general knowledge.
 
 This project was built on top of the [Endee](https://github.com/endee-io/endee) open-source vector database as part of an AI/ML project evaluation.
 
@@ -157,7 +157,7 @@ User Question
 |-------|-----------|---------|
 | Vector Database | [Endee](https://github.com/endee-io/endee) | Store and search document embeddings |
 | Embeddings | `sentence-transformers` (all-MiniLM-L6-v2) | Convert text to 384-dim vectors — runs locally, free |
-| LLM | Groq API — `qwen-qwq-32b` | Generate precise answers from retrieved context |
+| LLM | Groq API — `qwen/qwen3-32b` | Generate precise answers from retrieved context |
 | Backend | FastAPI | REST API — upload, query, and serve frontend |
 | Frontend | Vanilla HTML/CSS/JS | Beautiful dark UI with drag-and-drop upload |
 | PDF parsing | PyMuPDF (`fitz`) | Extract text from PDF files |
@@ -311,49 +311,18 @@ http://localhost:8000
 
 ---
 
-## API Reference
+## API Endpoints
 
-The backend exposes these REST endpoints:
+The FastAPI backend exposes these endpoints — all consumed by the frontend UI at `http://localhost:8000`:
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/health` | Health check |
-| `POST` | `/upload` | Upload and ingest a document |
-| `POST` | `/query` | Ask a question, get an answer |
-| `GET` | `/sources` | List all ingested documents |
-| `GET` | `/docs` | Interactive Swagger UI |
+| `GET` | `/health` | Check if the server is running |
+| `POST` | `/upload` | Receives uploaded file, extracts text, chunks it, embeds it and stores in Endee |
+| `POST` | `/query` | Embeds the question, searches Endee for top-K chunks, sends to Groq Qwen, returns answer |
+| `GET` | `/sources` | Returns list of all documents ingested in current session |
 
-### Example: Upload a file
-
-```bash
-curl -X POST http://localhost:8000/upload \
-  -F "file=@mydocument.pdf"
-```
-
-### Example: Ask a question
-
-```bash
-curl -X POST http://localhost:8000/query \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What are the key findings?", "top_k": 5}'
-```
-
-### Example response
-
-```json
-{
-  "question": "What are the key findings?",
-  "answer": "The key findings are...",
-  "sources": ["uploaded_docs/paper.pdf"],
-  "chunks": [
-    {
-      "text": "...",
-      "source": "uploaded_docs/paper.pdf",
-      "score": 0.8923
-    }
-  ]
-}
-```
+> All endpoints are called automatically by the frontend — no manual API interaction needed. Simply open `http://localhost:8000` in your browser and use the UI.
 
 ---
 
